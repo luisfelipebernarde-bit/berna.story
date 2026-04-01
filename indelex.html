@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Loja</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+body{background:#f4f4f4;}
+
+header{
+    background:#111;
+    color:#fff;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+header button{
+    padding:10px;
+    cursor:pointer;
+}
+
+.produtos{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:30px;
+}
+
+.produto{
+    background:#fff;
+    width:220px;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.produto img{width:100%;}
+
+.produto button{
+    margin-top:10px;
+    padding:10px;
+    width:100%;
+    background:#111;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+
+/* CARRINHO */
+#carrinho{
+    position:fixed;
+    right:-350px;
+    top:0;
+    width:350px;
+    height:100%;
+    background:#222;
+    color:#fff;
+    padding:20px;
+    transition:0.3s;
+}
+
+#carrinho.ativo{right:0;}
+
+.item{margin:10px 0;}
+
+#finalizar{
+    margin-top:20px;
+    padding:10px;
+    width:100%;
+    background:green;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+
+/* PIX */
+#pixBox{
+    display:none;
+    background:#fff;
+    color:#000;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+#chavePix{
+    background:#eee;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+}
+
+#copiarPix{
+    width:100%;
+    padding:10px;
+    background:#111;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+    <h2>Minha Loja</h2>
+    <button onclick="abrirCarrinho()">Carrinho 🛒</button>
+</header>
+
+<div class="produtos">
+
+<div class="produto">
+    <img src="https://via.placeholder.com/200">
+    <h3>Camiseta</h3>
+    <p>R$ 50</p>
+    <button onclick="addCarrinho('Camiseta',50)">Comprar</button>
+</div>
+
+<div class="produto">
+    <img src="https://via.placeholder.com/200">
+    <h3>Tênis</h3>
+    <p>R$ 120</p>
+    <button onclick="addCarrinho('Tênis',120)">Comprar</button>
+</div>
+
+<div class="produto">
+    <img src="https://via.placeholder.com/200">
+    <h3>Boné</h3>
+    <p>R$ 35</p>
+    <button onclick="addCarrinho('Boné',35)">Comprar</button>
+</div>
+
+</div>
+
+<div id="carrinho">
+    <button onclick="fecharCarrinho()">Fechar</button>
+
+    <h2>Carrinho</h2>
+    <div id="itens"></div>
+    <h3 id="total">Total: R$ 0</h3>
+
+    <button id="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+
+    <!-- PIX -->
+    <div id="pixBox">
+        <h3>Pague via PIX</h3>
+        <p>Valor: <span id="valorPix"></span></p>
+
+        <div id="chavePix">16997588254</div>  
+
+        <button id="copiarPix" onclick="copiarPix()">Copiar PIX</button>
+    </div>
+</div>
+
+<script>
+
+let carrinho = []
+let total = 0
+
+function abrirCarrinho(){
+    document.getElementById("carrinho").classList.add("ativo")
+}
+
+function fecharCarrinho(){
+    document.getElementById("carrinho").classList.remove("ativo")
+}
+
+function addCarrinho(nome, preco){
+    carrinho.push({nome, preco})
+    atualizarCarrinho()
+}
+
+function atualizarCarrinho(){
+    let itens = document.getElementById("itens")
+    itens.innerHTML = ""
+    total = 0
+
+    carrinho.forEach(item=>{
+        itens.innerHTML += `<div class="item">${item.nome} - R$ ${item.preco}</div>`
+        total += item.preco
+    })
+
+    document.getElementById("total").innerText = "Total: R$ " + total
+}
+
+function finalizarCompra(){
+    if(carrinho.length == 0){
+        alert("Carrinho vazio!")
+        return
+    }
+
+    document.getElementById("pixBox").style.display = "block"
+    document.getElementById("valorPix").innerText = "R$ " + total
+}
+
+function copiarPix(){
+    let chave = document.getElementById("chavePix").innerText
+
+    navigator.clipboard.writeText(chave)
+
+    alert("PIX copiado!")
+}
+
+</script>
+
+</body>
+</html>
